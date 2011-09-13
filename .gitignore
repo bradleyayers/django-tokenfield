@@ -1,0 +1,11 @@
+*.pyc
+/*.komodoproject
+/*.tmproj
+/*.egg-info/
+/*.egg
+.DS_Store
+/MANIFEST
+/dist/
+/build/
+/docs/_build/
+/example/database.sqlite
