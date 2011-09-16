@@ -1,0 +1,38 @@
+<div class="django_tokenfield-container" id="{{ id }}">
+    <ol class="django_tokenfield-input"
+        data-bind="click: function() {
+                       if (tokens().length)
+                           tokens()[tokens().length-1].select();
+                   },
+                   template: { name: 'django_tokenfield-token_template',
+                               foreach: tokens,
+                               afterRender: function(elements) {
+                                   setTimeout(function() {
+                                       $(elements).find('input').each(function() {
+                                           this.resizeToFit();
+                                       });
+                                   }, 0);
+                               } }"></ol>
+    <input {{ attrs.as_html }} data-bind="value: inputValue"/>
+    <span class="django_tokenfield-choices_toggle"
+          data-bind="click: function() { choicesVisible(!choicesVisible()); },
+                     css: { 'django_tokenfield-selected': choicesVisible }"></span>
+
+    <ol class="django_tokenfield-choices"
+        data-bind="css: { 'django_tokenfield-visible': choicesVisible }">
+        {% for key, value in tokens %}
+        <li data-bind="click: function() { addVariable('{{ key|escapejs }}'); choicesVisible(false); }">{{ value }}</li>
+        {% endfor %}
+    </ol>
+</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+$(function() {
+    var container = document.getElementById("{{ id }}"),
+        encoded = document.getElementById("{{ id }}_encoded"),
+        viewModel = DjangoTokenFieldViewModel();
+    ko.applyBindings(viewModel, container);
+    viewModel.inputValue("{{ value|escapejs }}");
+});
+/* ]]> */
+</script>

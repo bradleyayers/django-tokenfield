@@ -2,10 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>django-tokenfield examples</title>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tmpl.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/knockout-1.2.1.js"></script>
+        {{ form.media }}
+        <style type="text/css">
+        .message {
+            background-color: #BDD7BC;
+            border: 1px solid #66B060;
+            padding: 0.5em;
+            font-family: monospace;
+        }
+        </style>
     </head>
 
     <body>
         <h1><tt>django-tokenfield</tt> examples</h1>
         <p>This page demonstrates django-tokenfield</p>
+        {% if message %}
+        <p>Path = <span class="message">{{ message }}</span></p>
+        {% endif %}
+        <form action="" method="post">{% csrf_token %}
+            <table>
+                <tbody>
+                    {{ form.as_table }}
+                </tbody>
+            </table>
+            <p><input type="submit" /></p>
+        </form>
     </body>
 </html>

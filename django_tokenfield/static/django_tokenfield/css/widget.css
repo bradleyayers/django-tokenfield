@@ -1,0 +1,119 @@
+div.django_tokenfield-container {
+    display: inline-block;
+    position: relative;
+}
+
+ol.django_tokenfield-input {
+    background-color: white;
+    border: 1px solid #8496BA;
+    clear: left;
+    cursor: text;
+    display: inline-block;
+    font-size: 12px;
+    font-family: monospace;
+    list-style-type: none;
+    height: 1%;
+    margin: 0;
+    min-height: 1px;
+    overflow: hidden;
+    padding: 0;
+    width: 400px;
+    z-index: 999;
+}
+
+li.django_tokenfield-variable {
+    background-color: #EFF2F7;
+    border: 1px solid #CCD5E4;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: black;
+    cursor: default;
+    float: left;
+    font-size: 11px;
+    height: auto !important;
+    height: 15px;
+    margin: 3px 0;
+    overflow: hidden;
+    padding: 1px 3px;
+    white-space: nowrap;
+}
+
+li.django_tokenfield-variable a {
+    color: black;
+    text-decoration: none;
+}
+
+li.django_tokenfield-literal {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.django_tokenfield-literal > input[type="text"] {
+    background-color: transparent;
+    border: 0;
+    font-family: monospace;
+    margin: 2px 0;
+    padding: 3px;
+    width: 5px;
+    -webkit-appearance: caret;
+}
+
+li.django_tokenfield-variable.django_tokenfield-selected {
+    background-color: #7890F5;
+    border-color: #476BD9;
+    color: white;
+}
+
+li.django_tokenfield-variable.django_tokenfield-selected a {
+    color: white;
+}
+
+/* -- Choices -------------------------------------------------------------- */
+
+span.django_tokenfield-choices_toggle {
+    background: transparent url(../img/dropdown.png) left top no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    width: 16px;
+    margin: 4px;
+}
+
+span.django_tokenfield-choices_toggle:hover,
+span.django_tokenfield-choices_toggle.django_tokenfield-selected {
+    background-position: left bottom;
+}
+
+ol.django_tokenfield-choices {
+    background: red;
+    display: none;
+    height: 50px;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    margin: 0;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    width: 200px;
+}
+
+ol.django_tokenfield-choices.django_tokenfield-visible {
+    display: block;
+}
+
+ol.django_tokenfield-choices > li {
+    background-color: #CCD7AC;
+    border-bottom: 1px solid #B6C491;
+    font-size: 11pt;
+    padding: 3px 6px;
+    cursor: pointer;
+}
+
+ol.django_tokenfield-choices > li:hover {
+    background-color: orange;
+}

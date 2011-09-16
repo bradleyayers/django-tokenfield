@@ -15,14 +15,9 @@ settings.configure(
             'NAME': ':memory:',
         }
     },
-    INSTALLED_APPS = [
-        'django_tokenfield',
-    ]
+    INSTALLED_APPS = ['django_tokenfield']
 )
 
-from django.test.simple import DjangoTestSuiteRunner
-runner = DjangoTestSuiteRunner()
-runner.setup_databases()
 
 from .field import fieldtests
 
