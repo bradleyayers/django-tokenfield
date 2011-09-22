@@ -1,5 +1,6 @@
 div.django_tokenfield-container {
     display: inline-block;
+    height: 25px;
     position: relative;
 }
 
@@ -12,11 +13,11 @@ ol.django_tokenfield-input {
     font-size: 12px;
     font-family: monospace;
     list-style-type: none;
-    height: 1%;
+    height: 23px;
     margin: 0;
     min-height: 1px;
     overflow: hidden;
-    padding: 0;
+    padding: 0 3px;
     width: 400px;
     z-index: 999;
 }
@@ -56,7 +57,7 @@ li.django_tokenfield-literal > input[type="text"] {
     border: 0;
     font-family: monospace;
     margin: 2px 0;
-    padding: 3px;
+    padding: 3px 0;
     width: 5px;
     -webkit-appearance: caret;
 }
@@ -76,11 +77,13 @@ li.django_tokenfield-variable.django_tokenfield-selected a {
 span.django_tokenfield-choices_toggle {
     background: transparent url(../img/dropdown.png) left top no-repeat;
     cursor: pointer;
-    display: inline-block;
+    display: block;
     height: 16px;
-    position: relative;
+    position: absolute;
+    right: -20px; /* -(16 + 4) */
+    top: 0;
     width: 16px;
-    margin: 4px;
+    margin: 4px 0;
 }
 
 span.django_tokenfield-choices_toggle:hover,
@@ -89,17 +92,24 @@ span.django_tokenfield-choices_toggle.django_tokenfield-selected {
 }
 
 ol.django_tokenfield-choices {
-    background: red;
+    background-color: white;
+    border: 1px solid #AAA;
+    border-radius: 5px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.30);
     display: none;
-    height: 50px;
-    list-style: none;
-    padding: 0;
-    position: absolute;
-    margin: 0;
-    bottom: -50px;
+    font-family: "Lucida Grande", Helvetica, sans-serif;
+    font-size: 10pt;
+    max-height: 150px;
     left: 0;
+    line-height: 14pt;
+    list-style: none;
+    margin: 0;
+    overflow: scroll;
+    padding: 3px 0;
+    position: absolute;
     right: 0;
-    width: 200px;
+    top: 28px;
+    z-index: 100;
 }
 
 ol.django_tokenfield-choices.django_tokenfield-visible {
@@ -107,13 +117,61 @@ ol.django_tokenfield-choices.django_tokenfield-visible {
 }
 
 ol.django_tokenfield-choices > li {
-    background-color: #CCD7AC;
-    border-bottom: 1px solid #B6C491;
-    font-size: 11pt;
-    padding: 3px 6px;
+    border-top: 1px solid #EEF0EE;
     cursor: pointer;
+    padding: 3px 6px 3px 8px;
+}
+
+ol.django_tokenfield-choices > li:first-child {
+    border-top: none;
 }
 
 ol.django_tokenfield-choices > li:hover {
-    background-color: orange;
+    background-image: linear-gradient(bottom, rgb(27,34,234) 0%, rgb(36,50,246) 1%, rgb(85,104,249) 99%, rgb(75,97,237) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(27,34,234) 0%, rgb(36,50,246) 1%, rgb(85,104,249) 99%, rgb(75,97,237) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(27,34,234) 0%, rgb(36,50,246) 1%, rgb(85,104,249) 99%, rgb(75,97,237) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(27,34,234) 0%, rgb(36,50,246) 1%, rgb(85,104,249) 99%, rgb(75,97,237) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(27,34,234) 0%, rgb(36,50,246) 1%, rgb(85,104,249) 99%, rgb(75,97,237) 100%);
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, rgb(27,34,234)),
+            color-stop(0.01, rgb(36,50,246)),
+            color-stop(0.99, rgb(85,104,249)),
+            color-stop(1, rgb(75,97,237))
+    );
+    border-top-color: white;
+    color: white;
+}
+
+ol.django_tokenfield-choices > li:hover > p,
+ol.django_tokenfield-choices > li:hover > span.key,
+ol.django_tokenfield-choices > li:hover > span.name {
+    color: white;
+}
+
+ol.django_tokenfield-choices > li > p {
+    color: #666;
+    font-size: 7pt;
+    font-weight: normal;
+    line-height: 9pt;
+    margin: 1px 0;
+}
+
+ol.django_tokenfield-choices > li > span.key {
+    color: #222;
+    font-family: monospace;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+ol.django_tokenfield-choices > li > span.name:before {
+    content: " ⁓ ";
+}
+
+ol.django_tokenfield-choices > li > span.name {
+    color: #444;
+    font-style: italic;
+    font-size: 9pt;
 }

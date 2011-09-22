@@ -5,16 +5,16 @@ from django_tokenfield import TokenField
 
 
 TOKENS = (
-    ("key",  {'myk': 'brad'}),
-    ("key2", "value2"),
-    ("key3", "value3"),
-    ("key4", "value4"),
+    ("firstName",  "First name"),
+    ("lastName", "Last name"),
+    ("age", "Age"),
 )
 
 
 class SimpleForm(forms.Form):
     name = forms.CharField(max_length=200)
-    path = TokenField(tokens=TOKENS)
+    source = TokenField(tokens=TOKENS)
+    destination = TokenField(tokens=TOKENS)
 
 
 def example(request):
@@ -22,7 +22,9 @@ def example(request):
     if request.method == "POST":
         form = SimpleForm(request.POST, request.FILES)
         if form.is_valid():
-            context['message'] = repr(form.cleaned_data['path'])
+            context['message'] = "Source: %r; Destination: %r" % (
+                    form.cleaned_data['source'],
+                    form.cleaned_data['destination'])
     else:
         form = SimpleForm()
     context['form'] = form

@@ -20,8 +20,16 @@
 
     <ol class="django_tokenfield-choices"
         data-bind="css: { 'django_tokenfield-visible': choicesVisible }">
+        <li>
+            <span class="key">uuid</span>
+            <span class="name">Universally Unique IDentifier</span>
+            <p>The UUID of a such and such. of a such and such. of a such and such. of a such and such. of a such and such.</p>
+        </li>
         {% for key, value in tokens %}
-        <li data-bind="click: function() { addVariable('{{ key|escapejs }}'); choicesVisible(false); }">{{ value }}</li>
+        <li data-bind="click: function() { addVariable('{{ key|escapejs }}'); choicesVisible(false); }">
+            <span class="key">{{ key }}</span>
+            <span class="name">{{ value }}</span>
+        </li>
         {% endfor %}
     </ol>
 </div>

@@ -40,14 +40,14 @@
         init: function(element, valueAccessor) {
             if (!element.focus || !element.blur)
                 throw new Error('focus binding requires an element that supports focus() and blur()');
+            $(element).focus(function() { valueAccessor()(true);  });
+            $(element).blur(function()  { valueAccessor()(false); });
         },
         update: function(element, valueAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor());
-            if (value == true && document.activeElement != element) {
+            if (ko.utils.unwrapObservable(valueAccessor()))
                 element.focus();
-            } else if (value == false && document.activeElement == element) {
+            else
                 element.blur();
-            }
         }
     }
 
