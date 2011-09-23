@@ -38,16 +38,28 @@
 
     ko.bindingHandlers.focus = {
         init: function(element, valueAccessor) {
-            if (!element.focus || !element.blur)
-                throw new Error('focus binding requires an element that supports focus() and blur()');
+            if (element.tagName !== "INPUT") {
+                ko.utils.registerEventHandler(document, "click", function(event) {
+                    if (event.target != element) {
+                        $(element).trigger('blur');
+                    }
+                });
+            }
             $(element).focus(function() { valueAccessor()(true);  });
             $(element).blur(function()  { valueAccessor()(false); });
         },
         update: function(element, valueAccessor) {
-            if (ko.utils.unwrapObservable(valueAccessor()))
-                element.focus();
-            else
-                element.blur();
+            if (ko.utils.unwrapObservable(valueAccessor())) {
+                // If this isn't actually something that can be 'focused', we
+                // need to at least blur everything else.
+                if (document.activeElement != element)
+                    document.activeElement.blur();
+                if (element.focus)
+                    element.focus();
+            } else {
+                if (element.blur)
+                    element.blur();
+            }
         }
     }
 

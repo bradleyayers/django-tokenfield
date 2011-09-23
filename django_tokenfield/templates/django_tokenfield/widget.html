@@ -1,8 +1,9 @@
 <div class="django_tokenfield-container" id="{{ id }}">
     <ol class="django_tokenfield-input"
-        data-bind="click: function() {
-                       if (tokens().length)
-                           tokens()[tokens().length-1].select();
+        data-bind="css: { 'django_tokenfield-hasFocus': tokens.selected() },
+                   click: function() {
+                       if (!tokens.selected() && tokens().length)
+                           tokens.last().select();
                    },
                    template: { name: 'django_tokenfield-token_template',
                                foreach: tokens,

@@ -4,9 +4,9 @@
     script.id = 'django_tokenfield-token_template';
     script.text = [
         "<li data-bind=\"css: { 'django_tokenfield-variable': type == 'variable',",
-        "                      'django_tokenfield-literal': type == 'literal',",
-        "                      'django_tokenfield-selected': selected },",
-        '               click: function(event) { select(); event.stopPropagation(); }">',
+        "                       'django_tokenfield-literal': type == 'literal',",
+        "                       'django_tokenfield-selected': selected },",
+        "               click: function(event) { select(); }\">",
         '{{if type == "literal"}}',
         '    <input type="text"',
         '           data-bind="value: value,',
@@ -30,7 +30,8 @@
         '                      }"/>',
         '{{else}}',
         '    <span type="text" class="value"',
-        "          data-bind=\"text: value(),",
+        '          data-bind="text: value(),',
+        '                     focus: selected,',
         '                     hop: {',
         '                         left: function() {',
         '                             var prev = this.previous();',
@@ -62,6 +63,17 @@ var DjangoTokenFieldViewModel = function() {
     viewModel.nextTokenId = 0;
     // All the tokens that are currently in the input
     viewModel.tokens = ko.observableArray([]);
+    // The last token
+    viewModel.tokens.last = function() { return this()[this().length-1]; };
+    // The first token
+    viewModel.tokens.first = function() { return this()[0]; };
+    // Return the token that is currently selected, or null.
+    viewModel.tokens.selected = ko.dependentObservable(function() {
+        return ko.utils.arrayFirst(this.tokens(), function(token) {
+            if (token.selected())
+                return token;
+        });
+    }, viewModel);
     // Is the variable selection dropdown currently visible?
     viewModel.choicesVisible = ko.observable(false);
     // Adds a variable at the end.
@@ -83,7 +95,7 @@ var DjangoTokenFieldViewModel = function() {
      * `value` -- any string
      *
      * Returns:
-     * <token object>
+     * <Token object>
      */
     var Token = function(type, value) {
         this.id = viewModel.nextTokenId++;
@@ -92,14 +104,15 @@ var DjangoTokenFieldViewModel = function() {
         this.selected = ko.observable(false);
         this.select = function() { this.selected(true); };
         this.remove = function() { viewModel.tokens.remove(this); };
+        this.focus = function() {};
         this.next = function() {
-            if (viewModel.tokens()[viewModel.tokens().length-1] == this)
+            if (viewModel.tokens.last() == this)
                 // This is the most right token already, bail out.
                 return null;
             return viewModel.tokens()[viewModel.tokens.indexOf(this) + 1];
         };
         this.previous = function() {
-            if (viewModel.tokens()[0] == this)
+            if (viewModel.tokens.first() == this)
                 // This is the most left token already, bail out.
                 return null;
             return viewModel.tokens()[viewModel.tokens.indexOf(this) - 1];
@@ -116,6 +129,20 @@ var DjangoTokenFieldViewModel = function() {
         });
     };
 
+    // Return the value of the widget (i.e. the hidden input's value)
+    viewModel.inputValue = ko.dependentObservable({
+        read: function() {
+            return ko.toJSON(this.tokens)
+        },
+        write: function(value) {
+            this.reset();
+            ko.utils.arrayForEach(JSON.parse(value), function(token) {
+                viewModel.tokens.push(new Token(token.type, token.value));
+            });
+        },
+        owner: viewModel
+    });
+
     /*
      * "Clean" the field by collapsing sibling literals and ensuring a literal
      * at each end.
@@ -131,13 +158,13 @@ var DjangoTokenFieldViewModel = function() {
             if (viewModel.tokens().length == 0)
                 viewModel.tokens.push(new Token('literal', ''));
 
-            var token = viewModel.tokens()[0],
+            var token = viewModel.tokens.first(),
                 next;
 
             if (token.type == 'variable')
                 viewModel.tokens.unshift(new Token('literal', ''));
 
-            token = viewModel.tokens()[0];
+            token = viewModel.tokens.first();
 
             while (true) {
                 if (next)
@@ -162,28 +189,6 @@ var DjangoTokenFieldViewModel = function() {
             cleaning = false;
         });
     })();
-
-    // Return the token that is currently selected, or undefined.
-    viewModel.selectedToken = ko.dependentObservable(function() {
-        ko.utils.arrayForEach(this.tokens(), function(token) {
-            if (token.selected())
-                return token;
-        });
-    }, viewModel);
-
-    // Return the value of the widget (i.e. the hidden input's value)
-    viewModel.inputValue = ko.dependentObservable({
-        read: function() {
-            return ko.toJSON(this.tokens)
-        },
-        write: function(value) {
-            this.reset();
-            ko.utils.arrayForEach(JSON.parse(value), function(token) {
-                viewModel.tokens.push(new Token(token.type, token.value));
-            });
-        },
-        owner: viewModel
-    });
 
     return viewModel;
 };
